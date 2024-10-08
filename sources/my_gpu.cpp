@@ -16,11 +16,13 @@ void GPU::operator = (GPU &_gpu)
         iArg=_gpu.iArg;
 }
 
-void GPU::init_gpu(vector<std::string> kernel_names,std::string dir_path)
+void GPU::init_gpu(vector<std::string> kernel_names,std::string dir_path, int processing_unit_index)
 {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
     std::vector<cl::Device> devices;
+    cl::Device device;
+    int dindx=0;
 
     if(print_device_names)
     {
@@ -30,18 +32,26 @@ void GPU::init_gpu(vector<std::string> kernel_names,std::string dir_path)
             devices.clear();
             platforms[i].getDevices(CL_DEVICE_TYPE_ALL, &devices);
             for(int j=0;j<devices.size();j++)
-            std::cout<<devices[j].getInfo<CL_DEVICE_NAME>()<<"; ";
+            {
+                std::cout<<devices[j].getInfo<CL_DEVICE_NAME>()<<"("<<dindx<<"); ";
+                if(dindx==processing_unit_index)device=devices[j];
+                dindx++;
+
+            }
+
         }
-        std::cout<<endl<<"USING_GPU"<<endl;
+        //std::cout<<endl<<"USING_GPU"<<endl;
+        std::cout<<std::endl;
     }
 
 
 
 
-    platforms[0].getDevices(CL_DEVICE_TYPE_GPU, &devices);
-    cl::Device device=devices[0];
+    //platforms[0].getDevices(CL_DEVICE_TYPE_GPU, &devices);
+    //platforms[processing_unit_index].getDevices(CL_DEVICE_TYPE_ALL, &devices);
+    //cout<<platforms.size()<<endl;
 
-    cout<<"GPU_name: "<<device.getInfo<CL_DEVICE_NAME>()<<endl;
+    cout<<"using: "<<device.getInfo<CL_DEVICE_NAME>()<<endl;
     contextDevices.push_back(device);
     cout<<"device initialized"<<endl;
     context=cl::Context(contextDevices);
@@ -49,7 +59,7 @@ void GPU::init_gpu(vector<std::string> kernel_names,std::string dir_path)
     gpu_queue=cl::CommandQueue(context, device);
 
 
-    cout<<"gpu_queue initialized"<<endl;
+    cout<<"queue initialized"<<endl;
 
     for(int i=0; i<kernel_names.size(); i++)
     {
