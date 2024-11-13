@@ -5,7 +5,6 @@
 
 #define console_logs 1
 
-using namespace std;
 enum ConsoleColor
 {
         Black         = 0,
@@ -26,4 +25,4 @@ enum ConsoleColor
         White         = 15
 };
 void set_color(ConsoleColor text=White, ConsoleColor background=Black);
-void call_error(bool critical, string func, string type, string data="none",vector<float> int_data=vector<float>());
+void call_error(bool critical, std::string func, std::string type, std::string data="none",std::vector<float> int_data=std::vector<float>());
