@@ -26,6 +26,7 @@ private:
     std::string sourceCode;
 
     int iArg;
+    bool inited=false;
 
 public:
 
@@ -34,9 +35,11 @@ public:
     void operator = (GPU &_gpu);
 
 
-    void add_variable(std::string key, cl_mem_flags mem_flag, size_t bufsize);
+
+    bool is_inited();
     cl::Buffer* get_variable(std::string key);
     void set_variable(std::string key,cl::Buffer* variable);
+    void add_variable(std::string key, cl_mem_flags mem_flag, size_t bufsize);
 
 
     template <typename T>

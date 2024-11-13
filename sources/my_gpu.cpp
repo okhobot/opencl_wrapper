@@ -73,14 +73,17 @@ void GPU::init_gpu(vector<std::string> kernel_names,std::string dir_path, int pr
         kernels[kernel_names[i]]=cl::Kernel(program, kernel_names[i].c_str());
         sourceFile.close();
     }
+
+    inited=true;
+
     cout<<"done"<<endl<<endl;
 
 }
 
 
-void GPU::add_variable(std::string key, cl_mem_flags mem_flag, size_t bufsize)
+bool GPU::is_inited()
 {
-    variables[key]=cl::Buffer(context, mem_flag, bufsize);
+    return inited;
 }
 cl::Buffer* GPU::get_variable(std::string key)
 {
@@ -90,7 +93,10 @@ void GPU::set_variable(std::string key, cl::Buffer* variable)
 {
     variables[key]=*variable;
 }
-
+void GPU::add_variable(std::string key, cl_mem_flags mem_flag, size_t bufsize)
+{
+    variables[key]=cl::Buffer(context, mem_flag, bufsize);
+}
 
 void GPU::process_gpu(std::string kernel_name, std::vector<std::string> variable_names, std::vector<float> floats, std::vector<int> ints, int s1, int s2, int s3)
 {
