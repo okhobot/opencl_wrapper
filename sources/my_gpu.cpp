@@ -1,7 +1,6 @@
 #include "my_gpu.hpp"
 
 #define print_device_names 1
-using namespace std;
 
 void GPU::operator = (GPU &_gpu)
 {
@@ -16,7 +15,7 @@ void GPU::operator = (GPU &_gpu)
         iArg=_gpu.iArg;
 }
 
-void GPU::init_gpu(vector<std::string> kernel_names,std::string dir_path, int processing_unit_index)
+void GPU::init_gpu(std::vector<std::string> kernel_names,std::string dir_path, int processing_unit_index)
 {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
@@ -51,19 +50,19 @@ void GPU::init_gpu(vector<std::string> kernel_names,std::string dir_path, int pr
     //platforms[processing_unit_index].getDevices(CL_DEVICE_TYPE_ALL, &devices);
     //cout<<platforms.size()<<endl;
 
-    cout<<"using: "<<device.getInfo<CL_DEVICE_NAME>()<<endl;
+    std::cout<<"using: "<<device.getInfo<CL_DEVICE_NAME>()<<std::endl;
     contextDevices.push_back(device);
-    cout<<"device initialized"<<endl;
+    std::cout<<"device initialized"<<std::endl;
     context=cl::Context(contextDevices);
-    cout<<"context initialized"<<endl;
+    std::cout<<"context initialized"<<std::endl;
     gpu_queue=cl::CommandQueue(context, device);
 
 
-    cout<<"queue initialized"<<endl;
+    std::cout<<"queue initialized"<<std::endl;
 
     for(int i=0; i<kernel_names.size(); i++)
     {
-        if(console_logs)cout<<"initializing the kernel: "<<kernel_names[i]<<endl;
+        if(console_logs)std::cout<<"initializing the kernel: "<<kernel_names[i]<<std::endl;
         sourceFile.open((dir_path+kernel_names[i]+".cl"));
         if(sourceFile.peek()==EOF)call_error(0,"init_gpu","loading kernel error", "kernel name: "+dir_path+kernel_names[i]);
         sourceCode=std::string(std::istreambuf_iterator<char>(sourceFile),(std::istreambuf_iterator<char>()));
@@ -76,7 +75,7 @@ void GPU::init_gpu(vector<std::string> kernel_names,std::string dir_path, int pr
 
     inited=true;
 
-    cout<<"done"<<endl<<endl;
+    std::cout<<"done"<<std::endl<<std::endl;
 
 }
 
@@ -103,7 +102,7 @@ void GPU::process_gpu(std::string kernel_name, std::vector<std::string> variable
     iArg = 0;
     if(kernels.find(kernel_name)==kernels.end())
     {
-        cout<<"process_gpu - kernel not found: "<<kernel_name<<endl;
+        std::cout<<"process_gpu - kernel not found: "<<kernel_name<<std::endl;
         return;
     }
     kernel=kernels[kernel_name];
