@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <my_gpu.hpp>
+#include <oclw.hpp>
 #include <chrono>
 int main()
 {

@@ -1,4 +1,4 @@
-#include "my_gpu.hpp"
+#include "oclw.hpp"
 
 #define print_device_names 1
 
