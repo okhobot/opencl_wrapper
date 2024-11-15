@@ -50,13 +50,19 @@ void OCLW::init(int processing_unit_index,bool debug, bool print_device_names)
 
     std::cout<<"queue initialized"<<std::endl;
 
+    inited=true;
+
 }
 
 
 
 void OCLW::init_kernels(std::vector<std::string> kernel_names,std::string dir_path)
 {
-
+    if(!inited)
+    {
+        call_warning("init_kernels","warning","oclw not initialazed. initialazing...");
+        init();
+    }
 
     for(int i=0; i<kernel_names.size(); i++) // adding kernels
     {
@@ -71,7 +77,7 @@ void OCLW::init_kernels(std::vector<std::string> kernel_names,std::string dir_pa
         sourceFile.close();
     }
 
-    inited=true;
+
 
     std::cout<<"done"<<std::endl<<std::endl;
 
@@ -97,6 +103,12 @@ void OCLW::add_variable(std::string key, cl_mem_flags mem_flag, size_t bufsize)
 
 void OCLW::process_oclw(std::string kernel_name, std::vector<std::string> variable_names, std::vector<float> floats, std::vector<int> ints, int s1, int s2, int s3)
 {
+    if(!inited)
+    {
+        call_error(1,"process_oclw","initialization error","oclw not initialazed");
+        init();
+    }
+
     iArg = 0;
     if(kernels.find(kernel_name)==kernels.end())//checking for the presence of a kernel
     {

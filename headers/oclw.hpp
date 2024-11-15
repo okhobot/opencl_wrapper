@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
-#include "debugger.hpp"
+#include "debug_utils.hpp"
 
 class OCLW
 {
