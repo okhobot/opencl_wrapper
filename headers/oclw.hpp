@@ -30,7 +30,7 @@ private:
 
 public:
 
-    void init_oclw(std::vector<std::string> kernel_names, std::string dir_path="", int processing_unit_index=0);//add kernels
+    void init_kernels(std::vector<std::string> kernel_names, std::string dir_path="", int processing_unit_index=0);//add kernels
 
     void operator = (OCLW &_oclw);
 

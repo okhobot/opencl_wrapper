@@ -5,7 +5,7 @@
 int main()
 {
     OCLW oclw;
-    oclw.init_oclw({"test_kernel"},"kernels/");
+    oclw.init_kernels({"test_kernel"},"kernels/");
 
     std::vector<int> vec(100);
     for(int i=0;i<vec.size();i++)

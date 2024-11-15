@@ -14,7 +14,7 @@ void OCLW::operator = (OCLW &_oclw)
         iArg=_oclw.iArg;
 }
 
-void OCLW::init_oclw(std::vector<std::string> kernel_names,std::string dir_path, int processing_unit_index)
+void OCLW::init_kernels(std::vector<std::string> kernel_names,std::string dir_path, int processing_unit_index)
 {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
