@@ -1,6 +1,5 @@
 #include "oclw.hpp"
 
-#define print_device_names 1
 
 void OCLW::operator = (OCLW &_oclw)
 {
@@ -14,7 +13,7 @@ void OCLW::operator = (OCLW &_oclw)
         iArg=_oclw.iArg;
 }
 
-void OCLW::init_kernels(std::vector<std::string> kernel_names,std::string dir_path, int processing_unit_index)
+void OCLW::init(int processing_unit_index,bool debug, bool print_device_names)
 {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
@@ -22,24 +21,22 @@ void OCLW::init_kernels(std::vector<std::string> kernel_names,std::string dir_pa
     cl::Device device;
     int device_indx=0;
 
-    if(print_device_names) // printing device names
-    {
-        std::cout<<"device_names: ";
+     // searching for a device
+        if(print_device_names) std::cout<<"device_names: ";
         for(int i=0;i<platforms.size();i++)
         {
             devices.clear();
             platforms[i].getDevices(CL_DEVICE_TYPE_ALL, &devices);
             for(int j=0;j<devices.size();j++)
             {
-                std::cout<<devices[j].getInfo<CL_DEVICE_NAME>()<<"("<<device_indx<<"); ";
+                if(print_device_names) std::cout<<devices[j].getInfo<CL_DEVICE_NAME>()<<"("<<device_indx<<"); ";
                 if(device_indx==processing_unit_index)device=devices[j];
                 device_indx++;
 
             }
 
         }
-        std::cout<<std::endl;
-    }
+        if(print_device_names) std::cout<<std::endl;
 
 
 
@@ -52,6 +49,14 @@ void OCLW::init_kernels(std::vector<std::string> kernel_names,std::string dir_pa
 
 
     std::cout<<"queue initialized"<<std::endl;
+
+}
+
+
+
+void OCLW::init_kernels(std::vector<std::string> kernel_names,std::string dir_path)
+{
+
 
     for(int i=0; i<kernel_names.size(); i++) // adding kernels
     {
