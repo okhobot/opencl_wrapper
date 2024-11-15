@@ -8,7 +8,6 @@ void GPU::operator = (GPU &_gpu)
         context=_gpu.context;
         contextDevices=_gpu.contextDevices;
         kernels=_gpu.kernels;
-        kernel=_gpu.kernel;
         sourceCode=_gpu.sourceCode;
         source=_gpu.source;
         program=_gpu.program;
@@ -21,9 +20,9 @@ void GPU::init_gpu(std::vector<std::string> kernel_names,std::string dir_path, i
     cl::Platform::get(&platforms);
     std::vector<cl::Device> devices;
     cl::Device device;
-    int dindx=0;
+    int device_indx=0;
 
-    if(print_device_names)
+    if(print_device_names) // printing device names
     {
         std::cout<<"device_names: ";
         for(int i=0;i<platforms.size();i++)
@@ -32,23 +31,17 @@ void GPU::init_gpu(std::vector<std::string> kernel_names,std::string dir_path, i
             platforms[i].getDevices(CL_DEVICE_TYPE_ALL, &devices);
             for(int j=0;j<devices.size();j++)
             {
-                std::cout<<devices[j].getInfo<CL_DEVICE_NAME>()<<"("<<dindx<<"); ";
-                if(dindx==processing_unit_index)device=devices[j];
-                dindx++;
+                std::cout<<devices[j].getInfo<CL_DEVICE_NAME>()<<"("<<device_indx<<"); ";
+                if(device_indx==processing_unit_index)device=devices[j];
+                device_indx++;
 
             }
 
         }
-        //std::cout<<endl<<"USING_GPU"<<endl;
         std::cout<<std::endl;
     }
 
 
-
-
-    //platforms[0].getDevices(CL_DEVICE_TYPE_GPU, &devices);
-    //platforms[processing_unit_index].getDevices(CL_DEVICE_TYPE_ALL, &devices);
-    //cout<<platforms.size()<<endl;
 
     std::cout<<"using: "<<device.getInfo<CL_DEVICE_NAME>()<<std::endl;
     contextDevices.push_back(device);
@@ -60,7 +53,7 @@ void GPU::init_gpu(std::vector<std::string> kernel_names,std::string dir_path, i
 
     std::cout<<"queue initialized"<<std::endl;
 
-    for(int i=0; i<kernel_names.size(); i++)
+    for(int i=0; i<kernel_names.size(); i++) // adding kernels
     {
         if(console_logs)std::cout<<"initializing the kernel: "<<kernel_names[i]<<std::endl;
         sourceFile.open((dir_path+kernel_names[i]+".cl"));
@@ -100,23 +93,23 @@ void GPU::add_variable(std::string key, cl_mem_flags mem_flag, size_t bufsize)
 void GPU::process_gpu(std::string kernel_name, std::vector<std::string> variable_names, std::vector<float> floats, std::vector<int> ints, int s1, int s2, int s3)
 {
     iArg = 0;
-    if(kernels.find(kernel_name)==kernels.end())
+    if(kernels.find(kernel_name)==kernels.end())//checking for the presence of a kernel
     {
         std::cout<<"process_gpu - kernel not found: "<<kernel_name<<std::endl;
         return;
     }
     kernel=kernels[kernel_name];
 
-    for(int i=0; i<variable_names.size(); i++)
+    for(int i=0; i<variable_names.size(); i++)// adding variables to kernel
     {
         if(variables.find(variable_names[i])==variables.end())call_error(1,"process_gpu","null variable error: ",variable_names[i]);
         kernel.setArg(iArg++, variables[variable_names[i]]);
     }
-    for(int i=0; i<floats.size(); i++)kernel.setArg(iArg++, floats[i]);
-    for(int i=0; i<ints.size(); i++)kernel.setArg(iArg++, ints[i]);
+    for(int i=0; i<floats.size(); i++)kernel.setArg(iArg++, floats[i]);// adding floats to kernel
+    for(int i=0; i<ints.size(); i++)kernel.setArg(iArg++, ints[i]);// adding ints to kernel
 
-    if(s2==0)gpu_queue.enqueueNDRangeKernel(kernel, cl::NullRange, cl::NDRange(s1));
-    else if(s3==0)gpu_queue.enqueueNDRangeKernel(kernel, cl::NullRange, cl::NDRange(s1,s2));
-    else gpu_queue.enqueueNDRangeKernel(kernel, cl::NullRange, cl::NDRange(s1,s2,s3));
+    if(s2==0)gpu_queue.enqueueNDRangeKernel(kernel, cl::NullRange, cl::NDRange(s1)); // starting a one-dimensional cycle
+    else if(s3==0)gpu_queue.enqueueNDRangeKernel(kernel, cl::NullRange, cl::NDRange(s1,s2)); // starting a two-dimensional cycle
+    else gpu_queue.enqueueNDRangeKernel(kernel, cl::NullRange, cl::NDRange(s1,s2,s3)); // starting a three-dimensional cycle
     gpu_queue.finish();
 }

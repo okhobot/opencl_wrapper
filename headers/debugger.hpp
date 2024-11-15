@@ -24,5 +24,5 @@ enum ConsoleColor
         Yellow        = 14,
         White         = 15
 };
-void set_color(ConsoleColor text=White, ConsoleColor background=Black);
+void set_color(ConsoleColor text=White, ConsoleColor background=Black);//set text color
 void call_error(bool critical, std::string func, std::string type, std::string data="none",std::vector<float> int_data=std::vector<float>());
