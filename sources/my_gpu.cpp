@@ -2,19 +2,19 @@
 
 #define print_device_names 1
 
-void GPU::operator = (GPU &_gpu)
+void OCLW::operator = (OCLW &_oclw)
 {
-        gpu_queue=_gpu.gpu_queue;
-        context=_gpu.context;
-        contextDevices=_gpu.contextDevices;
-        kernels=_gpu.kernels;
-        sourceCode=_gpu.sourceCode;
-        source=_gpu.source;
-        program=_gpu.program;
-        iArg=_gpu.iArg;
+        oclw_queue=_oclw.oclw_queue;
+        context=_oclw.context;
+        contextDevices=_oclw.contextDevices;
+        kernels=_oclw.kernels;
+        sourceCode=_oclw.sourceCode;
+        source=_oclw.source;
+        program=_oclw.program;
+        iArg=_oclw.iArg;
 }
 
-void GPU::init_gpu(std::vector<std::string> kernel_names,std::string dir_path, int processing_unit_index)
+void OCLW::init_oclw(std::vector<std::string> kernel_names,std::string dir_path, int processing_unit_index)
 {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
@@ -48,7 +48,7 @@ void GPU::init_gpu(std::vector<std::string> kernel_names,std::string dir_path, i
     std::cout<<"device initialized"<<std::endl;
     context=cl::Context(contextDevices);
     std::cout<<"context initialized"<<std::endl;
-    gpu_queue=cl::CommandQueue(context, device);
+    oclw_queue=cl::CommandQueue(context, device);
 
 
     std::cout<<"queue initialized"<<std::endl;
@@ -57,7 +57,7 @@ void GPU::init_gpu(std::vector<std::string> kernel_names,std::string dir_path, i
     {
         if(console_logs)std::cout<<"initializing the kernel: "<<kernel_names[i]<<std::endl;
         sourceFile.open((dir_path+kernel_names[i]+".cl"));
-        if(sourceFile.peek()==EOF)call_error(0,"init_gpu","loading kernel error", "kernel name: "+dir_path+kernel_names[i]);
+        if(sourceFile.peek()==EOF)call_error(0,"init_oclw","loading kernel error", "kernel name: "+dir_path+kernel_names[i]);
         sourceCode=std::string(std::istreambuf_iterator<char>(sourceFile),(std::istreambuf_iterator<char>()));
         source= cl::Program::Sources(1, std::make_pair(sourceCode.c_str(), sourceCode.length()+1));
         program = cl::Program(context, source);
@@ -73,29 +73,29 @@ void GPU::init_gpu(std::vector<std::string> kernel_names,std::string dir_path, i
 }
 
 
-bool GPU::is_inited()
+bool OCLW::is_inited()
 {
     return inited;
 }
-cl::Buffer* GPU::get_variable(std::string key)
+cl::Buffer* OCLW::get_variable(std::string key)
 {
     return &variables[key];
 }
-void GPU::set_variable(std::string key, cl::Buffer* variable)
+void OCLW::set_variable(std::string key, cl::Buffer* variable)
 {
     variables[key]=*variable;
 }
-void GPU::add_variable(std::string key, cl_mem_flags mem_flag, size_t bufsize)
+void OCLW::add_variable(std::string key, cl_mem_flags mem_flag, size_t bufsize)
 {
     variables[key]=cl::Buffer(context, mem_flag, bufsize);
 }
 
-void GPU::process_gpu(std::string kernel_name, std::vector<std::string> variable_names, std::vector<float> floats, std::vector<int> ints, int s1, int s2, int s3)
+void OCLW::process_oclw(std::string kernel_name, std::vector<std::string> variable_names, std::vector<float> floats, std::vector<int> ints, int s1, int s2, int s3)
 {
     iArg = 0;
     if(kernels.find(kernel_name)==kernels.end())//checking for the presence of a kernel
     {
-        std::cout<<"process_gpu - kernel not found: "<<kernel_name<<std::endl;
+        std::cout<<"process_oclw - kernel not found: "<<kernel_name<<std::endl;
         return;
     }
     kernel=kernels[kernel_name];
@@ -108,8 +108,8 @@ void GPU::process_gpu(std::string kernel_name, std::vector<std::string> variable
     for(int i=0; i<floats.size(); i++)kernel.setArg(iArg++, floats[i]);// adding floats to kernel
     for(int i=0; i<ints.size(); i++)kernel.setArg(iArg++, ints[i]);// adding ints to kernel
 
-    if(s2==0)gpu_queue.enqueueNDRangeKernel(kernel, cl::NullRange, cl::NDRange(s1)); // starting a one-dimensional cycle
-    else if(s3==0)gpu_queue.enqueueNDRangeKernel(kernel, cl::NullRange, cl::NDRange(s1,s2)); // starting a two-dimensional cycle
-    else gpu_queue.enqueueNDRangeKernel(kernel, cl::NullRange, cl::NDRange(s1,s2,s3)); // starting a three-dimensional cycle
-    gpu_queue.finish();
+    if(s2==0)oclw_queue.enqueueNDRangeKernel(kernel, cl::NullRange, cl::NDRange(s1)); // starting a one-dimensional cycle
+    else if(s3==0)oclw_queue.enqueueNDRangeKernel(kernel, cl::NullRange, cl::NDRange(s1,s2)); // starting a two-dimensional cycle
+    else oclw_queue.enqueueNDRangeKernel(kernel, cl::NullRange, cl::NDRange(s1,s2,s3)); // starting a three-dimensional cycle
+    oclw_queue.finish();
 }
