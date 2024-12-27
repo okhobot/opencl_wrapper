@@ -1,6 +1,5 @@
 obj
 bin
-.objs
 opencl_wrapper.cbp
 opencl_wrapper.layout
 opencl_wrapper.depend
