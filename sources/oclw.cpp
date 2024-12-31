@@ -13,7 +13,7 @@ void OCLW::operator = (OCLW &_oclw)
         iArg=_oclw.iArg;
 }
 
-void OCLW::init(int processing_unit_index,bool debug, bool print_device_names)
+void OCLW::init(int device_index,bool debug, bool print_device_names)
 {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
@@ -30,7 +30,7 @@ void OCLW::init(int processing_unit_index,bool debug, bool print_device_names)
             for(int j=0;j<devices.size();j++)
             {
                 if(print_device_names) std::cout<<devices[j].getInfo<CL_DEVICE_NAME>()<<"("<<device_indx<<"); ";
-                if(device_indx==processing_unit_index)
+                if(device_indx==device_index)
                 {
                     device=devices[j];
                     inited=true;
@@ -42,7 +42,7 @@ void OCLW::init(int processing_unit_index,bool debug, bool print_device_names)
         }
         if(print_device_names) std::cout<<std::endl;
 
-    if(!inited)call_error(1,"oclw_init","out of range","can not found device with processing_unit_index = ",{processing_unit_index});
+    if(!inited)call_error(1,"oclw_init","out of range","can not found device with device_index = ",{device_index});
 
     std::cout<<"using: "<<device.getInfo<CL_DEVICE_NAME>()<<std::endl;
     contextDevices.push_back(device);
