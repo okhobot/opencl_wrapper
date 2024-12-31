@@ -8,16 +8,20 @@ void set_color(ConsoleColor text, ConsoleColor background)
 void call_error(bool critical,std::string func, std::string type, std::string data, std::vector<float> float_data)
 {
     set_color(Red);
+
+    std::cout<<type<<" in "<<func;
+
     if(data != "none")
     {
-        std::cout<<type<<" in "<<func<<" - "<<data;
+        std::cout<<" - "<<data;
         for(int i=0;i<float_data.size();i++)std::cout<<float_data[i]<<"; ";
         std::cout<<std::endl;
     }
-    else std::cout<<type<<" in "<<func<<std::endl;
+
 
     set_color();
 
+    std::cout<<std::endl;
     if(critical)
     {
         std::string tmp;

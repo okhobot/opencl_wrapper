@@ -30,7 +30,11 @@ void OCLW::init(int processing_unit_index,bool debug, bool print_device_names)
             for(int j=0;j<devices.size();j++)
             {
                 if(print_device_names) std::cout<<devices[j].getInfo<CL_DEVICE_NAME>()<<"("<<device_indx<<"); ";
-                if(device_indx==processing_unit_index)device=devices[j];
+                if(device_indx==processing_unit_index)
+                {
+                    device=devices[j];
+                    inited=true;
+                }
                 device_indx++;
 
             }
@@ -38,7 +42,7 @@ void OCLW::init(int processing_unit_index,bool debug, bool print_device_names)
         }
         if(print_device_names) std::cout<<std::endl;
 
-
+    if(!inited)call_error(1,"oclw_init","out of range","can not found device with processing_unit_index = ",{processing_unit_index});
 
     std::cout<<"using: "<<device.getInfo<CL_DEVICE_NAME>()<<std::endl;
     contextDevices.push_back(device);
@@ -50,7 +54,7 @@ void OCLW::init(int processing_unit_index,bool debug, bool print_device_names)
 
     std::cout<<"queue initialized"<<std::endl;
 
-    inited=true;
+
 
 }
 
@@ -60,7 +64,7 @@ void OCLW::init_kernels(std::vector<std::string> kernel_names,std::string dir_pa
 {
     if(!inited)
     {
-        call_warning("init_kernels","warning","oclw not initialazed. initialazing...");
+        call_warning("oclw_init_kernels","warning","oclw not initialazed. initialazing...");
         init();
     }
 
@@ -68,7 +72,7 @@ void OCLW::init_kernels(std::vector<std::string> kernel_names,std::string dir_pa
     {
         if(console_logs)std::cout<<"initializing the kernel: "<<kernel_names[i]<<std::endl;
         sourceFile.open((dir_path+kernel_names[i]+".cl"));
-        if(sourceFile.peek()==EOF)call_error(0,"init_oclw","loading kernel error", "kernel name: "+dir_path+kernel_names[i]);
+        if(sourceFile.peek()==EOF)call_error(0,"oclw_init_kernel","loading kernel error", "kernel name: "+dir_path+kernel_names[i]);
         sourceCode=std::string(std::istreambuf_iterator<char>(sourceFile),(std::istreambuf_iterator<char>()));
         source= cl::Program::Sources(1, std::make_pair(sourceCode.c_str(), sourceCode.length()+1));
         program = cl::Program(context, source);
