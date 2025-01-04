@@ -42,7 +42,7 @@ void OCLW::init(int device_index,bool debug, bool print_device_names)
         }
         if(print_device_names) std::cout<<std::endl;
 
-    if(!inited)call_error(1,"oclw_init","out of range","can not found device with device_index = ",{device_index});
+    if(!inited)debug_utils::call_error(1,"oclw_init","out of range","can not found device with device_index = ",{device_index});
 
     std::cout<<"using: "<<device.getInfo<CL_DEVICE_NAME>()<<std::endl;
     contextDevices.push_back(device);
@@ -64,7 +64,7 @@ void OCLW::init_kernels(std::vector<std::string> kernel_names,std::string dir_pa
 {
     if(!inited)
     {
-        call_warning("oclw_init_kernels","warning","oclw not initialazed. initialazing...");
+        debug_utils::call_warning("oclw_init_kernels","warning","oclw not initialazed. initialazing...");
         init();
     }
 
@@ -72,7 +72,7 @@ void OCLW::init_kernels(std::vector<std::string> kernel_names,std::string dir_pa
     {
         if(console_logs)std::cout<<"initializing the kernel: "<<kernel_names[i]<<std::endl;
         sourceFile.open((dir_path+kernel_names[i]+".cl"));
-        if(sourceFile.peek()==EOF)call_error(0,"oclw_init_kernel","loading kernel error", "kernel name: "+dir_path+kernel_names[i]);
+        if(sourceFile.peek()==EOF)debug_utils::call_error(0,"oclw_init_kernel","loading kernel error", "kernel name: "+dir_path+kernel_names[i]);
         sourceCode=std::string(std::istreambuf_iterator<char>(sourceFile),(std::istreambuf_iterator<char>()));
         source= cl::Program::Sources(1, std::make_pair(sourceCode.c_str(), sourceCode.length()+1));
         program = cl::Program(context, source);
@@ -109,7 +109,7 @@ void OCLW::process_oclw(std::string kernel_name, std::vector<std::string> variab
 {
     if(!inited)
     {
-        call_error(1,"process_oclw","initialization error","oclw not initialazed");
+        debug_utils::call_error(1,"process_oclw","initialization error","oclw not initialazed");
         init();
     }
 
@@ -123,7 +123,7 @@ void OCLW::process_oclw(std::string kernel_name, std::vector<std::string> variab
 
     for(int i=0; i<variable_names.size(); i++)// adding variables to kernel
     {
-        if(variables.find(variable_names[i])==variables.end())call_error(1,"process_gpu","null variable error: ",variable_names[i]);
+        if(variables.find(variable_names[i])==variables.end())debug_utils::call_error(1,"process_gpu","null variable error: ",variable_names[i]);
         kernel.setArg(iArg++, variables[variable_names[i]]);
     }
     for(int i=0; i<floats.size(); i++)kernel.setArg(iArg++, floats[i]);// adding floats to kernel
