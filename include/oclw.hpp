@@ -28,7 +28,10 @@ private:
     int iArg;
     bool inited=false;
 
+    bool console_logs=true;
+
 public:
+
 
     void init(int processing_unit_index=0, bool debug=true, bool print_device_names=false);
 
@@ -59,5 +62,6 @@ public:
     void process_oclw(std::string kernel_name, std::vector<std::string> variable_names, std::vector<float> floats, std::vector<int> ints, int s1, int s2=0, int s3=0);//run kernel
 
 
+    void set_console_logs(bool enabled=true){console_logs=enabled;}
 };
 #endif

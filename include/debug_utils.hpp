@@ -5,8 +5,6 @@
 
 namespace debug_utils
 {
-    #define console_logs 1
-
     enum ConsoleColor
     {
         Black         = 0,

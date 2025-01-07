@@ -44,15 +44,15 @@ void OCLW::init(int device_index,bool debug, bool print_device_names)
 
     if(!inited)debug_utils::call_error(1,"oclw_init","out of range","can not found device with device_index = ",{device_index});
 
-    std::cout<<"using: "<<device.getInfo<CL_DEVICE_NAME>()<<std::endl;
+    if(console_logs)std::cout<<"using: "<<device.getInfo<CL_DEVICE_NAME>()<<std::endl;
     contextDevices.push_back(device);
-    std::cout<<"device initialized"<<std::endl;
+    if(console_logs)std::cout<<"device initialized"<<std::endl;
     context=cl::Context(contextDevices);
-    std::cout<<"context initialized"<<std::endl;
+    if(console_logs)std::cout<<"context initialized"<<std::endl;
     oclw_queue=cl::CommandQueue(context, device);
 
 
-    std::cout<<"queue initialized"<<std::endl;
+    if(console_logs)std::cout<<"queue initialized"<<std::endl;
 
 
 
@@ -83,7 +83,7 @@ void OCLW::init_kernels(std::vector<std::string> kernel_names,std::string dir_pa
 
 
 
-    std::cout<<"done"<<std::endl<<std::endl;
+    if(console_logs)std::cout<<"done"<<std::endl<<std::endl;
 
 }
 
