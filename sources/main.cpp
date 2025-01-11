@@ -14,13 +14,16 @@ int main()
         vec[i]=i;
     }
 
-    auto msn=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    auto ms=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
     oclw.add_variable("vec",CL_MEM_READ_WRITE,vec.size()*sizeof(int));
-    oclw.write_variable("vec",vec.size()*sizeof(int),vec);
+    oclw.write_variable("vec",vec.size()*sizeof(int),vec.data());
+
     oclw.process_oclw("test_kernel",{"vec"},{},{vec.size()},vec.size());
 
-    std::cout<<"oclw ms spent: "<<std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count()-msn<<std::endl;
+    std::cout<<"oclw ms spent: "<<std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count()-ms<<std::endl;
+
+    for(int i=0;i<vec.size();i++)std::cout<<vec[i]<<" ";
 
     return 0;
 }

@@ -105,6 +105,16 @@ void OCLW::add_variable(std::string key, cl_mem_flags mem_flag, size_t bufsize)
     variables[key]=cl::Buffer(context, mem_flag, bufsize);
 }
 
+void OCLW::write_variable(std::string key, size_t bufsize, void *data)
+{
+    oclw_queue.enqueueWriteBuffer(variables[key], CL_TRUE, 0, bufsize, data);
+}
+
+void OCLW::read_variable(std::string key, size_t bufsize, void *data)
+{
+    oclw_queue.enqueueReadBuffer(variables[key], CL_TRUE, 0, bufsize, data);
+}
+
 void OCLW::process_oclw(std::string kernel_name, std::vector<std::string> variable_names, std::vector<float> floats, std::vector<int> ints, int s1, int s2, int s3)
 {
     if(!inited)
