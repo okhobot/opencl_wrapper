@@ -42,16 +42,16 @@ public:
 
 
     bool is_inited();
-    cl::Buffer* get_variable(std::string key);//get buffer by key
-    void set_variable(std::string key,cl::Buffer* variable);//set buffer in dictionary
-    void add_variable(std::string key, cl_mem_flags mem_flag, size_t bufsize);// add new variable
+    cl::Buffer* get_variable(const std::string &key);//get buffer by key
+    void set_variable(const std::string &key,cl::Buffer* variable);//set buffer in dictionary
+    void add_variable(const std::string &key, cl_mem_flags mem_flag, size_t bufsize);// add new variable
 
 
-    void write_variable(std::string key, size_t bufsize, void *data);//write vector to buffer
+    void write_variable(const std::string &key, size_t bufsize, void *data);//write vector to buffer
 
-    void read_variable(std::string key, size_t bufsize, void *data);//write buffer to output vector
+    void read_variable(const std::string &key, size_t bufsize, void *data);//write buffer to output vector
 
-    void process_oclw(std::string kernel_name, std::vector<std::string> variable_names, std::vector<float> floats, std::vector<int> ints, int s1, int s2=0, int s3=0);//run kernel
+    void process_oclw(const std::string &kernel_name, std::vector<std::string> variable_names, std::vector<float> floats, std::vector<int> ints, int s1, int s2=0, int s3=0);//run kernel
 
 
     void set_console_logs(bool enabled=true){console_logs=enabled;}

@@ -92,30 +92,30 @@ bool OCLW::is_inited()
 {
     return inited;
 }
-cl::Buffer* OCLW::get_variable(std::string key)
+cl::Buffer* OCLW::get_variable(const std::string &key)
 {
     return &variables[key];
 }
-void OCLW::set_variable(std::string key, cl::Buffer* variable)
+void OCLW::set_variable(const std::string &key, cl::Buffer* variable)
 {
     variables[key]=*variable;
 }
-void OCLW::add_variable(std::string key, cl_mem_flags mem_flag, size_t bufsize)
+void OCLW::add_variable(const std::string &key, cl_mem_flags mem_flag, size_t bufsize)
 {
     variables[key]=cl::Buffer(context, mem_flag, bufsize);
 }
 
-void OCLW::write_variable(std::string key, size_t bufsize, void *data)
+void OCLW::write_variable(const std::string &key, size_t bufsize, void *data)
 {
     oclw_queue.enqueueWriteBuffer(variables[key], CL_TRUE, 0, bufsize, data);
 }
 
-void OCLW::read_variable(std::string key, size_t bufsize, void *data)
+void OCLW::read_variable(const std::string &key, size_t bufsize, void *data)
 {
     oclw_queue.enqueueReadBuffer(variables[key], CL_TRUE, 0, bufsize, data);
 }
 
-void OCLW::process_oclw(std::string kernel_name, std::vector<std::string> variable_names, std::vector<float> floats, std::vector<int> ints, int s1, int s2, int s3)
+void OCLW::process_oclw(const std::string &kernel_name, std::vector<std::string> variable_names, std::vector<float> floats, std::vector<int> ints, int s1, int s2, int s3)
 {
     if(!inited)
     {
