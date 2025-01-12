@@ -26,7 +26,7 @@ namespace debug_utils
     };
     inline void set_color(ConsoleColor text=White, ConsoleColor background=Black);//set text color
     inline void call_error(bool critical, std::string func, std::string type, std::string data="none",std::vector<float> float_data=std::vector<float>());//print error to std::out
-    inline void call_warning(std::string func, std::string type, std::string data, std::vector<float> float_data=std::vector<float>());//print warning to std::out
+    inline void call_warning(std::string func, std::string type, std::string data="none", std::vector<float> float_data=std::vector<float>());//print warning to std::out
 
 
 
