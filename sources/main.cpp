@@ -23,7 +23,7 @@ int main()
 
     std::cout<<"oclw ms spent: "<<std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count()-ms<<std::endl;
 
-    for(int i=0;i<vec.size();i++)std::cout<<vec[i]<<" ";
+    //for(int i=0;i<vec.size();i++)std::cout<<vec[i]<<" ";
 
     return 0;
 }

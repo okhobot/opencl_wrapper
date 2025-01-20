@@ -105,6 +105,11 @@ void OCLW::add_variable(const std::string &key, cl_mem_flags mem_flag, size_t bu
     variables[key]=cl::Buffer(context, mem_flag, bufsize);
 }
 
+void OCLW::delete_variable(const std::string &key)
+{
+    variables.erase(key);
+}
+
 void OCLW::write_variable(const std::string &key, size_t bufsize, void *data)
 {
     oclw_queue.enqueueWriteBuffer(variables[key], CL_TRUE, 0, bufsize, data);

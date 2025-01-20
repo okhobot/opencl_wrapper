@@ -46,6 +46,8 @@ public:
     void set_variable(const std::string &key,cl::Buffer* variable);//set buffer in dictionary
     void add_variable(const std::string &key, cl_mem_flags mem_flag, size_t bufsize);// add new variable
 
+    void delete_variable(const std::string &key);//delete buffer in dictionary
+
 
     void write_variable(const std::string &key, size_t bufsize, void *data);//write vector to buffer
 
