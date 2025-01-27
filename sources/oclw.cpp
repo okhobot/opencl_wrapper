@@ -96,9 +96,9 @@ cl::Buffer* OCLW::get_variable(const std::string &key)
 {
     return &variables[key];
 }
-void OCLW::set_variable(const std::string &key, cl::Buffer* variable)
+void OCLW::set_variable(const std::string &key, const cl::Buffer &variable)
 {
-    variables[key]=*variable;
+    variables[key]=variable;
 }
 void OCLW::add_variable(const std::string &key, cl_mem_flags mem_flag, size_t bufsize)
 {
