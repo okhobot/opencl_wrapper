@@ -153,7 +153,7 @@ void OCLW::process_oclw(const std::string &kernel_name, std::vector<std::string>
 
     for(int i=0; i<variable_names.size(); i++)// adding variables to kernel
     {
-        if(variables.find(variable_names[i])==variables.end())debug_utils::call_error(1,"process_gpu","null variable error: ",variable_names[i]);
+        if(variables.find(variable_names[i])==variables.end())debug_utils::call_error(1,"process_gpu","null variable error: ","variable_name, kernel_name:"+variable_names[i]+", "+kernel_name);
         kernel.setArg(iArg++, variables[variable_names[i]]);
     }
     for(int i=0; i<floats.size(); i++)kernel.setArg(iArg++, floats[i]);// adding floats to kernel
