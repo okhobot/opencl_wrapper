@@ -139,7 +139,7 @@ void OCLW::process_oclw(const std::string &kernel_name, std::vector<std::string>
 {
     if(!inited)
     {
-        debug_utils::call_error(1,"process_oclw","initialization error","oclw not initialazed");
+        debug_utils::call_warning("process_oclw","oclw not initialazed","kernel_name: "+kernel_name);
         init();
     }
 
