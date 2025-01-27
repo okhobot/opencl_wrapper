@@ -16,8 +16,7 @@ int main()
 
     auto ms=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
-    oclw.add_variable("vec",CL_MEM_READ_WRITE,vec.size()*sizeof(int));
-    oclw.write_variable("vec",vec.size()*sizeof(int),vec.data());
+    oclw.add_and_write_variable("vec",CL_MEM_READ_WRITE,vec.size()*sizeof(int), vec.data());
 
     oclw.process_oclw("test_kernel",{"vec"},{},{vec.size()},vec.size());
 

@@ -42,9 +42,14 @@ public:
 
 
     bool is_inited();
+
     cl::Buffer* get_variable(const std::string &key);//get buffer by key
+
     void set_variable(const std::string &key,const cl::Buffer &variable);//set buffer in dictionary
+
     void add_variable(const std::string &key, cl_mem_flags mem_flag, size_t bufsize);// add new variable
+
+    void add_and_write_variable(const std::string &key, cl_mem_flags mem_flag, size_t bufsize, void *data);// add_variable and write_variable
 
     void delete_variable(const std::string &key);//delete buffer in dictionary
 

@@ -120,6 +120,12 @@ void OCLW::read_variable(const std::string &key, size_t bufsize, void *data)
     oclw_queue.enqueueReadBuffer(variables[key], CL_TRUE, 0, bufsize, data);
 }
 
+void OCLW::add_and_write_variable(const std::string &key, cl_mem_flags mem_flag, size_t bufsize, void *data)
+{
+    variables[key]=cl::Buffer(context, mem_flag, bufsize);
+    oclw_queue.enqueueWriteBuffer(variables[key], CL_TRUE, 0, bufsize, data);
+}
+
 std::vector<std::string> OCLW::get_variables_keys()
 {
     std::vector<std::string> keys;
