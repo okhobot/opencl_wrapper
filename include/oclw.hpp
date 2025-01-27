@@ -57,5 +57,7 @@ public:
 
 
     void set_console_logs(bool enabled=true){console_logs=enabled;}
+
+    std::vector<std::string> get_variables_keys();//get keys of variables map
 };
 #endif

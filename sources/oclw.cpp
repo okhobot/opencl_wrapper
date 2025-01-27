@@ -120,6 +120,15 @@ void OCLW::read_variable(const std::string &key, size_t bufsize, void *data)
     oclw_queue.enqueueReadBuffer(variables[key], CL_TRUE, 0, bufsize, data);
 }
 
+std::vector<std::string> OCLW::get_variables_keys()
+{
+    std::vector<std::string> keys;
+
+    for(std::map<std::string,cl::Buffer>::iterator it = variables.begin(); it != variables.end(); ++it)
+        keys.push_back(it->first);
+    return keys;
+}
+
 void OCLW::process_oclw(const std::string &kernel_name, std::vector<std::string> variable_names, std::vector<float> floats, std::vector<int> ints, int s1, int s2, int s3)
 {
     if(!inited)
