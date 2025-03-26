@@ -83,7 +83,7 @@ void OCLW::init_kernels(std::vector<std::string> kernel_names,std::string dir_pa
 
 
 
-    if(console_logs)std::cout<<"done"<<std::endl<<std::endl;
+    if(console_logs)std::cout<<"done"<<std::endl;
 
 }
 
