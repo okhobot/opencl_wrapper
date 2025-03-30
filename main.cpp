@@ -11,7 +11,7 @@ int main()
     std::vector<int> vec(1000);
     for(int i=0;i<vec.size();i++)
     {
-        vec[i]=i;
+        vec[i]=vec.size()-i-1;
     }
 
     auto ms=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();

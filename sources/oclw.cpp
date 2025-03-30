@@ -135,7 +135,7 @@ std::vector<std::string> OCLW::get_variables_keys()
     return keys;
 }
 
-void OCLW::process_oclw(const std::string &kernel_name, std::vector<std::string> variable_names, std::vector<float> floats, std::vector<int> ints, int s1, int s2, int s3)
+void OCLW::process_oclw(const std::string &kernel_name, std::vector<std::string> variable_names, std::vector<float> floats, std::vector<long long> ints, size_t s1, size_t s2, size_t s3)
 {
     if(!inited)
     {
