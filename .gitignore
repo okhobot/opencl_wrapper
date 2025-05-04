@@ -4,5 +4,4 @@ opencl_wrapper.layout
 opencl_wrapper.depend
 opencl_wrapper.cbp
 main.cpp
-sources
 kernels
