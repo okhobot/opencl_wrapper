@@ -1,42 +1,44 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include<windows.h>
 
 namespace debug_utils
 {
     enum ConsoleColor
     {
-        Black         = 0,
-        Blue          = 1,
-        Green         = 2,
-        Cyan          = 3,
-        Red           = 4,
-        Magenta       = 5,
-        Brown         = 6,
-        LightGray     = 7,
-        DarkGray      = 8,
-        LightBlue     = 9,
-        LightGreen    = 10,
-        LightCyan     = 11,
-        LightRed      = 12,
-        LightMagenta  = 13,
-        Yellow        = 14,
-        White         = 15
+        Black = 0,
+        Red,
+        Green,
+        Yellow,
+        Blue,
+        Magenta,
+        Cyan,
+        LightGray,
+        DarkGray,
+        LightRed,
+        LightGreen,
+        LightYellow,
+        LightBlue,
+        LightMagenta,
+        LightCyan,
+        White
     };
-    inline void set_color(ConsoleColor text=White, ConsoleColor background=Black);//set text color
-    inline void call_error(bool critical, std::string func, std::string type, std::string data="none",std::vector<float> float_data=std::vector<float>());//print error to std::out
-    inline void call_warning(std::string func, std::string type, std::string data="none", std::vector<float> float_data=std::vector<float>());//print warning to std::out
 
 
 
-    //definitions
-    void set_color(ConsoleColor text, ConsoleColor background)
+    inline void set_color(ConsoleColor text=White, ConsoleColor background=Black)//set text color
     {
-        HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-        SetConsoleTextAttribute(hStdOut, (WORD)((background << 4) | text));
+        int text_code = static_cast<int>(text);
+        int bg_code = static_cast<int>(background);
+
+        // ANSI: 30-37 = foreground standard, 90-97 = foreground bright
+        //       40-47 = background standard, 100-107 = background bright
+        int fg = (text_code <= 7) ? 30 + text_code : 90 + (text_code - 8);
+        int bg = (bg_code <= 7) ? 40 + bg_code : 100 + (bg_code - 8);
+
+        std::cout << "\033[" << fg << ";" << bg << "m";
     }
-    void call_error(bool critical,std::string func, std::string type, std::string data, std::vector<float> float_data)
+    inline void call_error(bool critical, std::string func, std::string type, std::string data="none",std::vector<float> float_data=std::vector<float>())//print error to std::out
     {
         set_color(Red);
 
@@ -60,7 +62,7 @@ namespace debug_utils
         }
     }
 
-    void call_warning(std::string func, std::string type, std::string data, std::vector<float> float_data)
+    inline void call_warning(std::string func, std::string type, std::string data="none", std::vector<float> float_data=std::vector<float>())//print warning to std::out
     {
         set_color(Yellow);
         if(data != "none")
