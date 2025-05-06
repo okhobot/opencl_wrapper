@@ -62,7 +62,7 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="sources/oclw.cpp" />
+		<Unit filename="src/oclw.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
