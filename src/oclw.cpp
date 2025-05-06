@@ -3,14 +3,14 @@
 
 void OCLW::operator = (OCLW &_oclw)
 {
-        oclw_queue=_oclw.oclw_queue;
-        context=_oclw.context;
-        contextDevices=_oclw.contextDevices;
-        kernels=_oclw.kernels;
-        sourceCode=_oclw.sourceCode;
-        source=_oclw.source;
-        program=_oclw.program;
-        iArg=_oclw.iArg;
+    oclw_queue=_oclw.oclw_queue;
+    context=_oclw.context;
+    contextDevices=_oclw.contextDevices;
+    kernels=_oclw.kernels;
+    sourceCode=_oclw.sourceCode;
+    source=_oclw.source;
+    program=_oclw.program;
+    iArg=_oclw.iArg;
 }
 
 void OCLW::init(int device_index,bool debug, bool print_device_names)
@@ -21,28 +21,28 @@ void OCLW::init(int device_index,bool debug, bool print_device_names)
     cl::Device device;
     int device_indx=0;
 
-     // searching for a device
-        if(print_device_names) std::cout<<"device_names: ";
-        for(int i=0;i<platforms.size();i++)
+    // searching for a device
+    if(print_device_names) std::cout<<"device_names: ";
+    for(int i=0; i<platforms.size(); i++)
+    {
+        devices.clear();
+        platforms[i].getDevices(CL_DEVICE_TYPE_ALL, &devices);
+        for(int j=0; j<devices.size(); j++)
         {
-            devices.clear();
-            platforms[i].getDevices(CL_DEVICE_TYPE_ALL, &devices);
-            for(int j=0;j<devices.size();j++)
+            if(print_device_names) std::cout<<devices[j].getInfo<CL_DEVICE_NAME>()<<"("<<device_indx<<"); ";
+            if(device_indx==device_index)
             {
-                if(print_device_names) std::cout<<devices[j].getInfo<CL_DEVICE_NAME>()<<"("<<device_indx<<"); ";
-                if(device_indx==device_index)
-                {
-                    device=devices[j];
-                    inited=true;
-                }
-                device_indx++;
-
+                device=devices[j];
+                inited=true;
             }
+            device_indx++;
 
         }
-        if(print_device_names) std::cout<<std::endl;
 
-    if(!inited)debug_utils::call_error(1,"oclw_init","out of range","can not found device with device_index = ",{device_index});
+    }
+    if(print_device_names) std::cout<<std::endl;
+
+    if(!inited)debug_utils::call_error(1,"oclw_init","out of range","can not found device with device_index = ", {device_index});
 
     if(console_logs)std::cout<<"using: "<<device.getInfo<CL_DEVICE_NAME>()<<std::endl;
     contextDevices.push_back(device);
