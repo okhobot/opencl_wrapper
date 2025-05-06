@@ -61,7 +61,10 @@ public:
     void process_oclw(const std::string &kernel_name, std::vector<std::string> variable_names, std::vector<float> floats, std::vector<long long> ints, size_t s1, size_t s2=0, size_t s3=0);//run kernel
 
 
-    void set_console_logs(bool enabled=true){console_logs=enabled;}
+    void set_console_logs(bool enabled=true)
+    {
+        console_logs=enabled;
+    }
 
     std::vector<std::string> get_variables_keys();//get keys of variables map
 };
