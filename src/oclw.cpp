@@ -13,7 +13,30 @@ void OCLW::operator = (OCLW &_oclw)
     iArg=_oclw.iArg;
 }
 
-void OCLW::init(int device_index,bool debug, bool print_device_names)
+std::vector<std::string> OCLW::get_available_devices_names()
+{
+    std::vector<std::string> names;
+
+    std::vector<cl::Platform> platforms;
+    cl::Platform::get(&platforms);
+    std::vector<cl::Device> devices;
+    cl::Device device;
+    int device_indx=0;
+    for(int i=0; i<platforms.size(); i++)
+    {
+        devices.clear();
+        platforms[i].getDevices(CL_DEVICE_TYPE_ALL, &devices);
+
+        for(int j=0; j<devices.size(); j++)
+        {
+            names.push_back(devices[j].getInfo<CL_DEVICE_NAME>()+"("+std::to_string(device_indx)+");");
+            device_indx++;
+        }
+    }
+    return names;
+}
+
+void OCLW::init(int device_index,bool a_console_logs)
 {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
@@ -21,26 +44,24 @@ void OCLW::init(int device_index,bool debug, bool print_device_names)
     cl::Device device;
     int device_indx=0;
 
+    console_logs=a_console_logs;
+
     // searching for a device
-    if(print_device_names) std::cout<<"device_names: ";
     for(int i=0; i<platforms.size(); i++)
     {
         devices.clear();
         platforms[i].getDevices(CL_DEVICE_TYPE_ALL, &devices);
         for(int j=0; j<devices.size(); j++)
         {
-            if(print_device_names) std::cout<<devices[j].getInfo<CL_DEVICE_NAME>()<<"("<<device_indx<<"); ";
             if(device_indx==device_index)
             {
                 device=devices[j];
                 inited=true;
             }
             device_indx++;
-
         }
 
     }
-    if(print_device_names) std::cout<<std::endl;
 
     if(!inited)debug_utils::call_error(1,"oclw_init","out of range","can not found device with device_index = ", {device_index});
 

@@ -5,6 +5,12 @@
 int main()
 {
     OCLW oclw;
+
+    std::vector<std::string> device_names =oclw.get_available_devices_names();
+    for(int i=0; i<device_names.size(); i++)
+        std::cout<<device_names[i]<<" ";
+    std::cout<<std::endl;
+
     oclw.init();
     oclw.init_kernels({"test_kernel"},"kernels/");
 
