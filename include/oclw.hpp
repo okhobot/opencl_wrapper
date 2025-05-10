@@ -33,7 +33,7 @@ private:
 public:
 
 
-    void init(int processing_unit_index=0, bool debug=true, bool print_device_names=false);
+    void init(int processing_unit_index=0, bool a_console_logs=true);
 
     void init_kernels(std::vector<std::string> kernel_names, std::string dir_path="");//add kernels to map
 
@@ -67,5 +67,7 @@ public:
     }
 
     std::vector<std::string> get_variables_keys();//get keys of variables map
+
+    std::vector<std::string> get_available_devices_names();
 };
 #endif
