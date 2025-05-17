@@ -1,3 +1,6 @@
+///EXAMPLE
+
+
 #include <iostream>
 #include <vector>
 #include <oclw.hpp>
