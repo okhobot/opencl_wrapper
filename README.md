@@ -17,11 +17,13 @@ A class for more convenient use of the openсl library at the basic level
 - The set_logs_output method is used to set the log stream
 - The init_kernel function is used to initialize new kernels
 
+- It is recommended to use the release branch 
+
 
 ## Examples
 - An example of using the library is described in the file main.cpp in the main branch
 - An example of a .cl file is described in the file test.cl in the main branch
 
 
-##License
+## License
 GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
