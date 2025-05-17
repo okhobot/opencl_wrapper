@@ -40,7 +40,7 @@ private:
 public:
 
 
-    void init(int processing_unit_index=0);
+    void init(int device_index=0);
 
     void init_kernels(std::vector<std::string> kernel_names, std::string dir_path="");//add kernels to map
 
@@ -70,6 +70,7 @@ public:
     //floats - float variables
     //ints - float variables
     //s1,s2,s3 - NDRange params
+    //the arguments are passed to the .cl file in the same sequence as in this function.
 
 
     void set_logs_output(std::ostream *out)//set output stream for logs
