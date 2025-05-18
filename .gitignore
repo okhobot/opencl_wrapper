@@ -1,6 +1,6 @@
 obj
 bin
-opencl_wrapper.layout
-opencl_wrapper.depend
-opencl_wrapper.depend
-lib_opencl_wrapper.a
+*.layout
+*.depend
+*.depend
+*.a
